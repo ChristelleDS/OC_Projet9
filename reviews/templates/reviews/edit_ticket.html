@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h3>Modifier le ticket</h3>
+    <form method="post">
+        {{ edit_form.as_p }}
+        {% csrf_token %}
+        <button type="submit" >Sauvegarder</button>
+    </form>
+    <hr>
+    <p><a href="{% url 'delete_ticket' ticket.id %}">Supprimer le ticket</a></p>
+    </form>
+{% endblock content %}

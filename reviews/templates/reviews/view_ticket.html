@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>{{ ticket.title }}</h2>
+    {% if ticket.image %}
+        <img src="{{ ticket.image.url }}">
+    {% endif %}
+    <p>{{ ticket.description }}</p>
+    <p>Crée le: {{ ticket.time_created }} par: {{ ticket.user }}</p>
+    <p><a href="{% url 'edit_ticket' ticket.id %}">Modifier le ticket</a></p>
+    {% for review in reviews %}
+    <div class="post">
+        <h2>{{ review.headline }}</h2>
+        <p>{{ review.rating}}</p>
+        <p>{{ review.body}}</p>
+        <p>Crée le: {{ review.time_created }} par: {{ review.user }}</p>
+        <p><a href="{% url 'edit_review' review.id %}">Modifier</a></p>
+    </div>
+    {% endfor %}
+{% endblock content %}
