@@ -8,7 +8,7 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView
 
-from .models import Ticket, Review
+from .models import Ticket
 
 
 
@@ -76,6 +76,23 @@ def createReview_Ticket(request):
         'ticket_form': ticket_form,
         'review_form': review_form,
                }
+    return render(request, 'reviews/createTicketwithReview.html', context=context)
+
+@login_required
+def createReview(request, ticket_id):
+    review_form = forms.ReviewForm()
+    ticket = get_object_or_404(models.Ticket, id=ticket_id)
+    if request.method == 'POST':
+        review_form = forms.ReviewForm(request.POST)
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.ticket = ticket
+            review.user = request.user
+            review.save()
+            return redirect('home')
+    context = {
+        'review_form': review_form,
+               }
     return render(request, 'reviews/createReview.html', context=context)
 
 
@@ -134,3 +151,6 @@ def feed(request):
         reverse=True
     )
     return render(request, 'feed.html', context={'posts': posts})
+
+
+

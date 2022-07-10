@@ -1,19 +1,67 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="row">
     <h2>{{ ticket.title }}</h2>
     {% if ticket.image %}
+    <div class="col">
         <img src="{{ ticket.image.url }}">
+    </div>
     {% endif %}
     <p>{{ ticket.description }}</p>
     <p>Crée le: {{ ticket.time_created }} par: {{ ticket.user }}</p>
-    <p><a href="{% url 'edit_ticket' ticket.id %}">Modifier le ticket</a></p>
+    <div class="row">
+        <p><a class="btn btn-primary col-1" href="{% url 'edit_ticket' ticket.id %}">Modifier</a>
+        <a class="btn btn-primary col-1" href="{% url 'delete_ticket' ticket.id %}">Supprimer</a>
+        <a class="btn btn-primary col-2" href="{% url 'review' ticket.id %}">Rédiger une critique</a></p>
+    </div>
+</div>
+<div class="row">
     {% for review in reviews %}
-    <div class="post">
-        <h2>{{ review.headline }}</h2>
-        <p>{{ review.rating}}</p>
-        <p>{{ review.body}}</p>
-        <p>Crée le: {{ review.time_created }} par: {{ review.user }}</p>
-        <p><a href="{% url 'edit_review' review.id %}">Modifier</a></p>
+    <div class="card col-sm-3">
+        <div class="card-body">
+            <h5 class="card-title">{{ review.headline }}</h5>
+                    {% if review.rating == 0 %}
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+        {% elif review.rating == 1 %}
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+        {% elif review.rating == 2 %}
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+        {% elif review.rating == 3 %}
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+        {% elif review.rating == 4 %}
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+        {% elif review.rating == 5 %}
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+        {% endif %}
+            <p class="card-text">{{ review.body}}</p>
+            <p class="card-text">Crée le: {{ review.time_created }} par: {{ review.user }}</p>
+            <p><a class="btn btn-primary" href="{% url 'edit_review' review.id %}">Modifier</a></p>
+        </div>
     </div>
     {% endfor %}
+</div>
 {% endblock content %}

@@ -1,13 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="row">
-    <h3>Bienvenu!</h3>
-    <p>{{ message }}</p>
-    <form method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <button type="submit" >Se connecter</button>
-    </form>
- <p>Pas encore membre ? <a href="{% url 'signup' %}">M'inscrire maintenant !</a></p>
+<div class="row justify-content-center g-lg-5 py-5">
+    <div class="col-lg-7 text-center">
+        <h3 class="display-4 fw-bold lh-1 mb-3">Bienvenu!</h3>
+        <p>{{ message }}</p>
+        <form method="post" class="p-4 p-md-5 border rounded-3 bg-light" >
+            <div class="form-floating mb-3">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <button type="submit" >Se connecter</button>
+        </form>
+    </div>
+    <p>Pas encore membre ? <a href="{% url 'signup' %}">M'inscrire maintenant !</a></p>
 </div>
+
 {% endblock content %}
