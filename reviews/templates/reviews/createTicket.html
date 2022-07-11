@@ -4,8 +4,7 @@
     <form method="post" enctype="multipart/form-data">
         {{ ticket_form.as_p }}
         {% csrf_token %}
-        <button type="submit" >Publier</button>
+        <button class="btn btn-primary col-1" type="submit" >Publier</button>
     </form>
-    <p>Retour à l'accueil:
-    <a href="{% url 'home' %}">ici</a></p>
+    <a class="btn btn-primary col-1" href="{% url 'home' %}">Retour à l'accueil</a>
 {% endblock content %}

@@ -22,6 +22,7 @@ class DeleteReviewForm(forms.Form):
 class DeleteTicketForm(forms.Form):
     delete_ticket = forms.BooleanField(widget=forms.HiddenInput, initial=True)
 
+
 User = get_user_model()
 
 class FollowUsersForm(forms.ModelForm):

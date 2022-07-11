@@ -4,7 +4,7 @@
     <form method="post">
         {{ edit_form.as_p }}
         {% csrf_token %}
-        <button type="submit" >Sauvegarder</button>
+        <button class="btn btn-primary col-1" type="submit" >Sauvegarder</button>
     </form>
     <hr>
 {% endblock content %}
