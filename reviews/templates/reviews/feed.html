@@ -1,20 +1,23 @@
 {% extends 'base.html' %}
+{% load review_tag %}
 {% block content %}
-    <h3>Votre flux</h3>
+    <h2>Votre flux</h2>
     <div class="grid-container">
         {% for instance in posts %}
-            {% if instance|model_type == 'Review' %}
+            {% if instance|model_type == 'Ticket' %}
                 <div class="post">
-                    <h4>Critique : {{ instance.title }}</h4>
-                    <p>{{ instance.time_created }}</p>
+                    <a href="{% url 'view_ticket' instance.id %}">
+                        <h4>Ticket : {{ instance.title }}</h4>
+                        <p>{{ instance.time_created }}</p>
+                    </a>
                 </div>
-            {% elif instance|model_type == 'Ticket' %}
+            {% elif instance|model_type == 'Review' %}
                 <div class="post">
                     <p>{{ instance.title }}</p>
+                    <p>{{ instance.rating }}</p>
                     <p>{{ instance.time_created }}</p>
                 </div>
             {% endif %}
         {% endfor %}
     </div>
-
 {% endblock content %}

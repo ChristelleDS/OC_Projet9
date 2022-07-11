@@ -5,7 +5,10 @@
         {{ ticket_form.as_p }}
         {{ review_form.as_p }}
         {% csrf_token %}
-        <button class="btn btn-primary col-1" type="submit" >Publier</button>
+        <div class="row">
+            <p><button class="btn btn-primary col-1" type="submit" >Publier</button>
+            <a class="btn btn-primary col-2" href="{% url 'home' %}">Retour à l'accueil</a></p>
+        </div>
     </form>
-    <a class="btn btn-primary col-1" href="{% url 'home' %}">Retour à l'accueil</a>
+
 {% endblock content %}

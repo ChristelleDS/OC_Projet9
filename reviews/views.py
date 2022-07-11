@@ -150,9 +150,9 @@ def follow_users(request):
 @login_required
 def feed(request):
     tickets = models.Ticket.objects.filter(
-        Q(user__in=request.user.follows) | Q(user=request.user))
+        Q(user__in=request.user.follows.all()) | Q(user=request.user))
     reviews = models.Review.objects.filter(
-        user__in=request.user.follows).exclude(
+        user__in=request.user.follows.all()).exclude(
         ticket__in=tickets
     )
     posts = sorted(
@@ -160,8 +160,4 @@ def feed(request):
         key=lambda instance: instance.time_created,
         reverse=True
     )
-    context = {
-        'posts': posts,
-    }
-
-    return render(request, 'reviews/feed.html', context=context)
+    return render(request, 'reviews/feed.html', {'posts': posts})
