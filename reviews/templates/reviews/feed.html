@@ -1,19 +1,16 @@
 {% extends 'base.html' %}
-{% load blog_extras %}
 {% block content %}
     <h3>Votre flux</h3>
     <div class="grid-container">
         {% for instance in posts %}
             {% if instance|model_type == 'Review' %}
                 <div class="post">
-                    <a href="{% url 'view_review' instance.id %}">
-                        <h4>Critique : {{ instance.title }}</h4>
-                        <p>{{ instance.time_created }}</p>
-                    </a>
+                    <h4>Critique : {{ instance.title }}</h4>
+                    <p>{{ instance.time_created }}</p>
                 </div>
             {% elif instance|model_type == 'Ticket' %}
                 <div class="post">
-                    <img src="{{ instance.image.url }}">
+                    <p>{{ instance.title }}</p>
                     <p>{{ instance.time_created }}</p>
                 </div>
             {% endif %}

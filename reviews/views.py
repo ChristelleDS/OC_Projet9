@@ -5,11 +5,9 @@ from django.shortcuts import get_object_or_404
 from . import models, forms
 from itertools import chain
 from django.db.models import Q
-from django.urls import reverse_lazy
-from django.views.generic import DeleteView
 
-from .models import Ticket
-
+from .models import Ticket, Review
+from authentication.models import User, UserFollows
 
 
 @login_required
@@ -50,11 +48,18 @@ def edit_ticket(request, ticket_id):
             if edit_form.is_valid():
                 edit_form.save()
                 return redirect('home')
-    return render(request, 'reviews/edit_ticket.html', {'edit_form':edit_form})
+    return render(request, 'reviews/edit_ticket.html', {'edit_form': edit_form})
 
-class delete_Ticket(DeleteView):
-    model = Ticket
-    success_url = reverse_lazy("home")
+
+def deleteTicket(request, ticket_id):
+    ticket = Ticket.objects.get(id=ticket_id)
+    if request.method == 'POST':
+        ticket.delete()
+        return redirect('home')
+    return render(request,
+                    'reviews/ticket_delete.html',
+                    {'ticket': ticket})
+
 
 @login_required
 def createReview_Ticket(request):
@@ -75,8 +80,9 @@ def createReview_Ticket(request):
     context = {
         'ticket_form': ticket_form,
         'review_form': review_form,
-               }
+    }
     return render(request, 'reviews/createTicketwithReview.html', context=context)
+
 
 @login_required
 def createReview(request, ticket_id):
@@ -92,7 +98,7 @@ def createReview(request, ticket_id):
             return redirect('home')
     context = {
         'review_form': review_form,
-               }
+    }
     return render(request, 'reviews/createReview.html', context=context)
 
 
@@ -100,6 +106,7 @@ def createReview(request, ticket_id):
 def view_review(request, review_id):
     review = get_object_or_404(models.Review, id=review_id)
     return render(request, 'reviews/view_review.html', {'review': review})
+
 
 @login_required
 def edit_review(request, review_id):
@@ -124,7 +131,6 @@ def edit_review(request, review_id):
     return render(request, 'reviews/edit_review.html', context=context)
 
 
-
 @login_required
 def follow_users(request):
     form = forms.FollowUsersForm(instance=request.user)
@@ -138,19 +144,19 @@ def follow_users(request):
 
 @login_required
 def feed(request):
-    reviews = models.Review.objects.filter(
-        Q(user__in=request.user.follows))
     tickets = models.Ticket.objects.filter(
+        Q(user__in=request.user.follows) | Q(user=request.user))
+    reviews = models.Review.objects.filter(
         user__in=request.user.follows).exclude(
-            reviews__in=reviews
+        ticket__in=tickets
     )
-    # combine and sort the two types of posts
     posts = sorted(
-        chain(reviews, tickets),
-        key=lambda reviews: reviews.time_created,
+        chain(tickets, reviews),
+        key=lambda instance: instance.time_created,
         reverse=True
     )
-    return render(request, 'feed.html', context={'posts': posts})
+    context = {
+        'posts': posts,
+    }
 
-
-
+    return render(request, 'reviews/feed.html', context=context)

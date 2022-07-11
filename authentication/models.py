@@ -7,15 +7,15 @@ class User(AbstractUser):
     follows = models.ManyToManyField(
         'self',
         symmetrical=False,
-        verbose_name='suit',
+        verbose_name='abonnement',
         through='UserFollows',
         related_name='followed_users'
     )
 
 
 class UserFollows(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='users')
-    follower = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='followers')
+    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='users')
+    followed_user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='followed')
 
     class Meta:
-        unique_together = ('user', 'follower')
+        unique_together = ('user', 'followed_user')

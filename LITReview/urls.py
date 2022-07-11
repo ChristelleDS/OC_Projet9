@@ -21,7 +21,6 @@ from django.contrib.auth.views import (LoginView, LogoutView,
                                        PasswordChangeView, PasswordChangeDoneView)
 import authentication.views
 import reviews.views
-from django.views.generic.edit import DeleteView
 
 
 
@@ -46,9 +45,7 @@ urlpatterns = [
     path('ticket/create/', reviews.views.createTicket, name='ticket'),
     path('ticket/<int:ticket_id>', reviews.views.view_ticket, name='view_ticket'),
     path('ticket/<int:ticket_id>/edit', reviews.views.edit_ticket, name='edit_ticket'),
-    path('ticket/<int:ticket_id>/delete', DeleteView.as_view(
-        model='Ticket'
-    ), name='delete_ticket'),
+    path('ticket/<int:ticket_id>/', reviews.views.deleteTicket, name='delete_ticket'),
     path('ticket/review/create/', reviews.views.createReview_Ticket, name='review_ticket'),
     path('ticket/<int:ticket_id>/review/create/', reviews.views.createReview, name='review'),
     path('review/<int:review_id>', reviews.views.view_review, name='view_review'),
