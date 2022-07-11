@@ -45,11 +45,12 @@ urlpatterns = [
     path('ticket/create/', reviews.views.createTicket, name='ticket'),
     path('ticket/<int:ticket_id>', reviews.views.view_ticket, name='view_ticket'),
     path('ticket/<int:ticket_id>/edit', reviews.views.edit_ticket, name='edit_ticket'),
-    path('ticket/<int:ticket_id>/', reviews.views.deleteTicket, name='delete_ticket'),
+    path('ticket/<int:ticket_id>/delete', reviews.views.deleteTicket, name='delete_ticket'),
     path('ticket/review/create/', reviews.views.createReview_Ticket, name='review_ticket'),
     path('ticket/<int:ticket_id>/review/create/', reviews.views.createReview, name='review'),
     path('review/<int:review_id>', reviews.views.view_review, name='view_review'),
     path('review/<int:review_id>/edit', reviews.views.edit_review, name='edit_review'),
+    path('review/<int:review_id>/delete', reviews.views.deleteReview, name='delete_review'),
     path('follow-users/', reviews.views.follow_users, name='follow_users'),
     path('feed/', reviews.views.feed, name='feed')
     ]
