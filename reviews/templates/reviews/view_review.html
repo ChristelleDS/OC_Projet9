@@ -1,8 +1,13 @@
 {% extends 'base.html' %}
+{% load review_tag %}
 {% block content %}
 
 <div class="container-fluid">
-    <div class="card-body">
+    <div class="card-body text-center">
+        <div class="">
+            <p>Critique en réponse à:</p>
+            {% include 'reviews/partials/ticket_snippet.html' with ticket=ticket %}
+        </div>
         <h2 class="card-title">{{ review.headline }}</h2>
         {% if review.rating == 0 %}
             <i class="fa-regular fa-star"></i>
@@ -42,7 +47,7 @@
             <i class="fa-solid fa-star"></i>
         {% endif %}
             <p class="card-text">{{ review.body}}</p>
-            <p class="card-text">Crée le: {{ review.time_created }} par: {{ review.user }}</p>
+            <p class="card-text">Crée le {{ review.time_created }} par {{ review.user }}</p>
         <div class="row">
             <p><a class="btn btn-primary col-1" href="{% url 'edit_review' review.id %}">Modifier</a>
             <a class="btn btn-primary col-1" href="{% url 'delete_review' review.id %}">Supprimer</a></p>

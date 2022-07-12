@@ -26,7 +26,7 @@ def createTicket(request):
             ticket = ticket_form.save(commit=False)
             ticket.user = request.user
             ticket.save()
-            return redirect('home')
+            return redirect('feed')
     context = {'ticket_form': ticket_form}
     return render(request, 'reviews/createTicket.html', context=context)
 
@@ -47,7 +47,7 @@ def edit_ticket(request, ticket_id):
             edit_form = forms.TicketForm(request.POST, instance=ticket)
             if edit_form.is_valid():
                 edit_form.save()
-                return redirect('home')
+                return redirect('feed')
     return render(request, 'reviews/edit_ticket.html', {'edit_form': edit_form})
 
 
@@ -56,7 +56,7 @@ def deleteTicket(request, ticket_id):
     ticket = Ticket.objects.get(id=ticket_id)
     if request.method == 'POST':
         ticket.delete()
-        return redirect('home')
+        return redirect('feed')
     return render(request,
                     'reviews/ticket_delete.html',
                     {'ticket': ticket})
@@ -77,7 +77,7 @@ def createReview_Ticket(request):
             review.ticket = ticket
             review.user = request.user
             review.save()
-            return redirect('home')
+            return redirect('feed')
     context = {
         'ticket_form': ticket_form,
         'review_form': review_form,
@@ -96,7 +96,7 @@ def createReview(request, ticket_id):
             review.ticket = ticket
             review.user = request.user
             review.save()
-            return redirect('home')
+            return redirect('feed')
     context = {
         'review_form': review_form,
         'ticket': ticket,
@@ -107,21 +107,24 @@ def createReview(request, ticket_id):
 @login_required
 def view_review(request, review_id):
     review = get_object_or_404(models.Review, id=review_id)
-    return render(request, 'reviews/view_review.html', {'review': review})
+    ticket = get_object_or_404(models.Ticket, id=review.ticket.id)
+    return render(request, 'reviews/view_review.html', {'review': review, 'ticket': ticket})
 
 
 @login_required
 def edit_review(request, review_id):
     review = get_object_or_404(models.Review, id=review_id)
+    ticket = get_object_or_404(models.Ticket, id=review.ticket.id)
     edit_form = forms.ReviewForm(instance=review)
     if request.method == 'POST':
         if 'edit_review' in request.POST:
             edit_form = forms.ReviewForm(request.POST, instance=review)
             if edit_form.is_valid():
                 edit_form.save()
-                return redirect('home')
+                return redirect('feed')
     context = {
         'edit_form': edit_form,
+        'ticket': ticket,
     }
     return render(request, 'reviews/edit_review.html', context=context)
 
@@ -131,7 +134,7 @@ def deleteReview(request, review_id):
     review = Review.objects.get(id=review_id)
     if request.method == 'POST':
         review.delete()
-        return redirect('home')
+        return redirect('feed')
     return render(request,
                     'reviews/review_delete.html',
                     {'review': review})

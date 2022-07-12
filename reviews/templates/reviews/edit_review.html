@@ -1,18 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
+
 <div class="container-fluid">
-    <h2>Modifier la critique</h2>
-    <form method="post">
-        {{ edit_form.as_p }}
-        {% csrf_token %}
-        <button class="btn btn-primary col-1" type="submit" >Sauvegarder</button>
-    </form>
-    <hr>
-    <h3>Supprimer la critique ?</h3>
-    <form method="post">
-        {{ delete_form }}
-        {% csrf_token %}
-        <button class="btn btn-primary col-1" type="submit" >Supprimer</button>
-    </form>
+    <div class="row text-center">
+        <h2>Modifier la critique</h2>
+        <div class="">
+            <p>Critique en réponse au ticket:</p>
+            {% include 'reviews/partials/ticket_snippet.html' with ticket=ticket %}
+        </div>
+        <form method="post">
+            {{ edit_form.as_p }}
+            {% csrf_token %}
+            <button class="btn btn-primary col-1" type="submit" >Sauvegarder</button>
+        </form>
+        <hr>
+        <h3>Supprimer la critique ?</h3>
+        <form method="post">
+            {{ delete_form }}
+            {% csrf_token %}
+            <button class="btn btn-primary col-1" type="submit" >Supprimer</button>
+        </form>
+    </div>
 </div>
+
 {% endblock content %}
