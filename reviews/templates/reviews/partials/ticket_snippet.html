@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% load review_tag %}
+<div class="row">
+    <h2>{{ ticket.title }}</h2>
+    {% if ticket.image %}
+    <div class="col">
+        <img src="{{ ticket.image.url }}">
+    </div>
+    {% endif %}
+    <p>{{ ticket.description }}</p>
+    <p>Crée le: {{ ticket.time_created|get_posted_at_display }}
+        par: {{ ticket.user}}</p>
+    <div class="row">
+        <a class="btn btn-primary col-1" href="{% url 'view_ticket' ticket.id %}">Voir</a>
+    </div>
+</div>
