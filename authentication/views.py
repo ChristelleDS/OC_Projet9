@@ -16,7 +16,7 @@ def login_page(request):
             )
             if user is not None:
                 login(request, user)
-                return redirect('home')
+                return redirect('feed')
         message = 'Identifiants invalides.'
     return render(
         request, 'authentication/login.html', context={'form': form, 'message': message})
