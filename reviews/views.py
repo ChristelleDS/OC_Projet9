@@ -144,7 +144,7 @@ def follow_users(request):
         form = forms.FollowUsersForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('feed')
     return render(request, 'reviews/follow_users_form.html', context={'form': form})
 
 
