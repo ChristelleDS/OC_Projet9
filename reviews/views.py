@@ -99,6 +99,7 @@ def createReview(request, ticket_id):
             return redirect('home')
     context = {
         'review_form': review_form,
+        'ticket': ticket,
     }
     return render(request, 'reviews/createReview.html', context=context)
 
