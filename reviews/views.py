@@ -162,3 +162,14 @@ def feed(request):
         reverse=True
     )
     return render(request, 'reviews/feed.html', {'posts': posts})
+
+@login_required
+def posts(request):
+    tickets = models.Ticket.objects.filter(user=request.user)
+    reviews = models.Review.objects.filter(user=request.user)
+    posts = sorted(
+        chain(tickets, reviews),
+        key=lambda instance: instance.time_created,
+        reverse=True
+    )
+    return render(request, 'reviews/posts.html', {'posts': posts})

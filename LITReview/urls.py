@@ -52,7 +52,8 @@ urlpatterns = [
     path('review/<int:review_id>/edit', reviews.views.edit_review, name='edit_review'),
     path('review/<int:review_id>/delete', reviews.views.deleteReview, name='delete_review'),
     path('follow-users/', reviews.views.follow_users, name='follow_users'),
-    path('feed/', reviews.views.feed, name='feed')
+    path('feed/', reviews.views.feed, name='feed'),
+    path('posts/', reviews.views.posts, name='posts')
     ]
 if settings.DEBUG:
     urlpatterns += static(
