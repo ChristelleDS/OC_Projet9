@@ -8,9 +8,13 @@
         <button class="btn btn-outline-success" type="submit">Search</button>
     </form>
 
-    <p>Utilisateurs déjà suivis:</p>
-    {% for u in user.follows.all %}{{ u }}<br/>{% endfor %}
+    <p>Utilisateurs déjà suivis:
+        {% for u in user.follows.all %}{{ u }}<br/>{% endfor %}
+    </p>
     <br>
+    <p>Abonnés:
+        {% for u in user.followers.all %}{{ u }}<br/>{% endfor %}
+    </p>
     <div class="row">
     <form method="post">
         {{ form.as_p }}

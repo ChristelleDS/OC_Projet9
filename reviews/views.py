@@ -7,7 +7,7 @@ from itertools import chain
 from django.db.models import Q
 
 from .models import Ticket, Review
-from authentication.models import User, UserFollows
+from authentication.models import User, UserFollows, UserFollowing
 
 
 @login_required
