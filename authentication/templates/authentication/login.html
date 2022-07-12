@@ -1,17 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="row justify-content-around g-lg-5 py-5">
-    <div class="col-lg-7 text-center">
-        <h3 class="display-4 fw-bold lh-1 mb-3">Bienvenu!</h3>
-        <p>{{ message }}</p>
-        <form method="post" class="p-4 p-md-5 border rounded-3 bg-light" >
-            <div class="form-floating mb-3">
-            {{ form.as_p }}
-            {% csrf_token %}
-            <button type="submit" >Se connecter</button>
-        </form>
-    </div>
-    <p>Pas encore membre ? <a href="{% url 'signup' %}">M'inscrire maintenant !</a></p>
+<div class="row text-center">
+    <h3 class="display-4 fw-bold">Bienvenu!</h3>
 </div>
+<div class="row justify-content-center g-lg-5 py-5">
+    <div class="text-center">
+        <p>{{ message }}</p>
+    </div>
+    <div class="col-lg-4 text-center">
+        <p>Pas encore membre ?</p>
+        <br>
+        <a class="btn btn-primary col-6" href="{% url 'signup' %}">M'inscrire maintenant !</a>
+    </div>
+    <form method="post" class="col-lg-4 text-center">
+            <div class="form-floating mb-3 p-4 p-md-5 border rounded-3 bg-light">
+                {{ form.as_p }}
+                {% csrf_token %}
+            </div>
+            <button class="btn btn-primary col-3" type="submit" >Se connecter</button>
+    </form>
+</div>
+
 
 {% endblock content %}

@@ -1,22 +1,28 @@
 {% extends 'base.html' %}
 {% load review_tag %}
 {% block content %}
-    <h2>Votre flux</h2>
+    <div class="row text-center">
+        <h2>Home Page</h2>
+    </div>
+
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+        <a type="button" class="btn btn-primary btn-lg px-4 me-sm-3"
+                href="{% url 'ticket' %}">Demander une critique</a>
+        <a type="button" class="btn btn-outline-secondary btn-lg px-4"
+                href="{% url 'review_ticket' %}">Rédiger une critique</a>
+    </div>
+
     <div class="grid-container">
         {% for instance in posts %}
             {% if instance|model_type == 'Ticket' %}
                 <div class="post">
                     <a href="{% url 'view_ticket' instance.id %}">
                         <h4>Ticket : {{ instance.title }}</h4>
-                        <p>{{ instance.time_created }}</p>
+                        <p>{{ instance.time_created|get_posted_at_display }}</p>
                     </a>
                 </div>
             {% elif instance|model_type == 'Review' %}
-                <div class="post">
-                    <p>{{ instance.title }}</p>
-                    <p>{{ instance.rating }}</p>
-                    <p>{{ instance.time_created }}</p>
-                </div>
+                 {% include 'reviews/partials/review_snippet.html' with review=instance %}
             {% endif %}
         {% endfor %}
     </div>
