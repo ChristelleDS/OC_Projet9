@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
+
+<div class="container-fluid">
     <div class="card-body">
         <h2 class="card-title">{{ review.headline }}</h2>
         {% if review.rating == 0 %}
@@ -46,7 +48,6 @@
             <a class="btn btn-primary col-1" href="{% url 'delete_review' review.id %}">Supprimer</a></p>
         </div>
     </div>
+</div>
 
 {% endblock content %}
-
-<i class="fa-solid fa-star"></i>

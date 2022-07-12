@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
+
+<div class="container-fluid">
     <h2>Créer un ticket</h2>
     <form method="post" enctype="multipart/form-data">
         {{ ticket_form.as_p }}
@@ -7,4 +9,6 @@
         <button class="btn btn-primary col-1" type="submit" >Publier</button>
     </form>
     <a class="btn btn-primary col-2" href="{% url 'home' %}">Retour à l'accueil</a>
+</div>
+
 {% endblock content %}

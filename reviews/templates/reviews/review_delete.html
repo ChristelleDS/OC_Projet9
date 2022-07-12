@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
-
 {% block content %}
+<div class="container-fluid">
     <h2>Suppression</h2>
     <form method="POST">
         {% csrf_token %}
@@ -11,6 +11,5 @@
         <a class="btn btn-primary col-1" href="{% url 'view_review' review.id %}">retour</a>
         </div>
     </form>
-
-
+</div>
 {% endblock %}

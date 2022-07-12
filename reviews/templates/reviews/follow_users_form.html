@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="container-fluid">
     <h2>Suivre des utilisateurs</h2>
     <p>Utilisateurs déjà suivis:</p>
     {% for u in user.follows.all %}{{ u }}<br/>{% endfor %}
@@ -11,4 +12,5 @@
         <button class="btn btn-primary col-1" type="submit" >Confirmer</button>
     </form>
     </div>
+</div>
 {% endblock content %}
