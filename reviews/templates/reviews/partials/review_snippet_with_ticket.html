@@ -49,6 +49,9 @@
                 <div class="text-end">
                     <a class="btn btn-primary col-2" href="{% url 'view_review' review.id %}">Voir</a>
                 </div>
+                <div class="row">
+                   {% include 'reviews/partials/ticket_snippet.html' with ticket=review.ticket %}
+                </div>
             </div>
           </div>
         </div>

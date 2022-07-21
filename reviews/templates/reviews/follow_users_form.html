@@ -3,24 +3,35 @@
 <div class="container-fluid">
     <h2>Suivre des utilisateurs</h2>
 
-    <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
-
     <p>Utilisateurs déjà suivis:
-        {% for u in user.follows.all %}{{ u }}<br/>{% endfor %}
+        {% for u in user.follows.all %}
+            {{ u }}
+            <br/>
+            <form method="post">
+            {{ form_unfollow.as_p }}
+            {% csrf_token %}
+            <button class="btn btn-primary col-1" type="submit" >Ne plus suivre</button>
+            </form>
+        {% endfor %}
     </p>
     <br>
     <p>Abonnés:
         {% for u in user.followers.all %}{{ u }}<br/>{% endfor %}
     </p>
+
+    <h5>Suivre un nouvel utilisateur:</h5>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">@</span>
+  <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
     <div class="row">
-    <form method="post">
-        {{ form.as_p }}
+        <span class="input-group-text" id="basic-addon1">@</span>
+        <form method="post">
+        {{ form_follow.as_p }}
         {% csrf_token %}
         <button class="btn btn-primary col-1" type="submit" >Confirmer</button>
-    </form>
+        </form>
     </div>
 </div>
 

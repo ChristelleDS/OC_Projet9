@@ -18,7 +18,7 @@
             {% if instance|model_type == 'Ticket' %}
                 {% include 'reviews/partials/ticket_snippet.html' with ticket=instance %}
             {% elif instance|model_type == 'Review' %}
-                {% include 'reviews/partials/review_snippet.html' with review=instance %}
+                {% include 'reviews/partials/review_snippet_with_ticket.html' with review=instance %}
             {% endif %}
         {% endfor %}
     </div>

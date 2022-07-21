@@ -8,7 +8,6 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 
 from .models import Ticket, Review
-from authentication.models import User, UserFollows, UserFollowing
 
 
 @login_required
@@ -143,21 +142,30 @@ def deleteReview(request, review_id):
 
 @login_required
 def follow_users(request):
-    form = forms.FollowUsersForm(instance=request.user)
+    form_follow = forms.FollowUsersForm(instance=request.user)
     if request.method == 'POST':
-        form = forms.FollowUsersForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect('feed')
-    return render(request, 'reviews/follow_users_form.html', context={'form': form})
+        form_follow = forms.FollowUsersForm(request.POST, instance=request.user)
+        if form_follow.is_valid():
+            form_follow.save()
+            return redirect('follow_users')
+    return render(request, 'reviews/follow_users_form.html', context={'form_follow': form_follow})
+
+@login_required
+def unfollow_users(request):
+    if request.method == 'POST':
+        form_unfollow = forms.UnFollowUsersForm(request.POST, instance=request.user)
+        if form_unfollow.is_valid():
+            form_unfollow.delete()
+            return redirect('follow_users')
+    return render(request, 'reviews/follow_users_form.html', context={'form_unfollow': form_unfollow})
 
 
 @login_required
 def feed(request):
     tickets = models.Ticket.objects.filter(
-        Q(user__in=request.user.follows.all()) | Q(user=request.user))
+        user__in=request.user.follows.all())
     reviews = models.Review.objects.filter(
-        Q(user__in=request.user.follows.all()) | Q(user=request.user))
+        user__in=request.user.follows.all())
     posts = sorted(
         chain(tickets, reviews),
         key=lambda instance: instance.time_created,
@@ -178,4 +186,4 @@ def posts(request):
         key=lambda instance: instance.time_created,
         reverse=True
     )
-    return render(request, 'reviews/posts.html', {"posts":posts})
+    return render(request, 'reviews/posts.html', {'posts':posts})

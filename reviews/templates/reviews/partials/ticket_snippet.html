@@ -3,7 +3,7 @@
     <div class="row justify-content-center">
         <div class="card mb-4" style="max-width: 540px;">
           <div class="row g-0">
-              <p class="card-header"><small class="text-muted">Ticket {{ ticket.time_created }}
+              <p class="card-header"><small class="text-muted">Ticket publié {{ ticket.time_created }}
                     par {{ ticket.user}}</small></p>
               <h5 class="card-title">{{ ticket.title }}</h5>
               {% if ticket.image %}
@@ -14,7 +14,7 @@
               <div class="card-body col-md-8">
                     <p class="card-text">{{ ticket.description }}</p>
                     <div class="text-end">
-                        <a class="btn btn-primary col-3" href="{% url 'view_ticket' ticket.id %}">Voir</a>
+                        <a class="btn btn-primary col-5" href="{% url 'view_ticket' ticket.id %}">écrire une critique</a>
                     </div>
               </div>
           </div>

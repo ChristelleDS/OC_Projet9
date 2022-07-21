@@ -28,4 +28,9 @@ User = get_user_model()
 class FollowUsersForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['follows', 'followers']
+        fields = ['follows']
+
+class UnFollowUsersForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['follows']
