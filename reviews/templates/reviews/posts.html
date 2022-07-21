@@ -9,12 +9,26 @@
     <div class="grid-container">
         {% for instance in posts %}
             {% if instance|model_type == 'Ticket' %}
-                {% include 'reviews/partials/ticket_snippet.html' with ticket=instance %}
+               {% include 'reviews/partials/ticket_snippet.html' with ticket=instance %}
             {% elif instance|model_type == 'Review' %}
-                {% include 'reviews/partials/review_snippet.html' with review=instance %}
+               {% include 'reviews/partials/review_snippet.html' with review=instance %}
             {% endif %}
         {% endfor %}
     </div>
+
+    <span class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}"> précédente </a>
+        {% endif %}
+
+        <span class="page-item page-link">
+            Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}.
+
+        </span>
+        {% if page_obj.has_next %}
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}"> suivante </a>
+        {% endif %}
+    </span>
 </div>
 
 {% endblock content %}

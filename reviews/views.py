@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from . import models, forms
 from itertools import chain
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 from .models import Ticket, Review
 from authentication.models import User, UserFollows, UserFollowing
@@ -156,23 +157,25 @@ def feed(request):
     tickets = models.Ticket.objects.filter(
         Q(user__in=request.user.follows.all()) | Q(user=request.user))
     reviews = models.Review.objects.filter(
-        user__in=request.user.follows.all()).exclude(
-        ticket__in=tickets
-    )
+        Q(user__in=request.user.follows.all()) | Q(user=request.user))
     posts = sorted(
         chain(tickets, reviews),
         key=lambda instance: instance.time_created,
         reverse=True
     )
-    return render(request, 'reviews/feed.html', {'posts': posts})
+    paginator = Paginator(posts, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {'page_obj': page_obj}
+    return render(request, 'reviews/feed.html', context=context)
 
 @login_required
 def posts(request):
-    tickets = models.Ticket.objects.filter(user=request.user)
-    reviews = models.Review.objects.filter(user=request.user)
+    tickets = models.Ticket.objects.filter(Q(user=request.user))
+    reviews = models.Review.objects.filter(Q(user=request.user))
     posts = sorted(
         chain(tickets, reviews),
         key=lambda instance: instance.time_created,
         reverse=True
     )
-    return render(request, 'reviews/posts.html', {'posts': posts})
+    return render(request, 'reviews/posts.html', {"posts":posts})
