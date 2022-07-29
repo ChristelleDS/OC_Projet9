@@ -29,8 +29,3 @@ class FollowUsersForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['follows']
-
-class UnFollowUsersForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['follows']

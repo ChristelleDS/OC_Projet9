@@ -153,7 +153,7 @@ def follow_users(request):
 @login_required
 def unfollow_users(request):
     if request.method == 'POST':
-        form_unfollow = forms.UnFollowUsersForm(request.POST, instance=request.user)
+        form_unfollow = forms.FollowUsersForm(request.POST, instance=request.user)
         if form_unfollow.is_valid():
             form_unfollow.delete()
             return redirect('follow_users')
