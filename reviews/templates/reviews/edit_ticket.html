@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container-fluid">
-    <h3>Modifier le ticket</h3>
+    <h3 class="mt-4">Modifier le ticket</h3>
     <form method="post">
         {{ edit_form.as_p }}
         {% csrf_token %}

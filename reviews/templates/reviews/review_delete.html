@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container-fluid">
-    <h2>Suppression</h2>
+    <h2 class="mt-4">Suppression</h2>
     <form method="POST">
         {% csrf_token %}
         <p>Êtes-vous sûr de vouloir supprimer "{{ review.title }}"?</p>
