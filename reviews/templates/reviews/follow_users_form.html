@@ -1,35 +1,39 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container-fluid">
+<div class="container-fluid" xmlns="http://www.w3.org/1999/html">
     <h2>Suivre des utilisateurs</h2>
-
-    <p>Utilisateurs déjà suivis:
-        {% for u in user.follows.all %}
-            {{ u }}
-            <br/>
-            <form method="post">
-            {{ form_unfollow.as_p }}
-            {% csrf_token %}
-            <button class="btn btn-primary col-1" type="submit" >Ne plus suivre</button>
-            </form>
-        {% endfor %}
-    </p>
-    <br>
-    <p>Abonnés:
-        {% for u in user.followers.all %}{{ u }}<br/>{% endfor %}
-    </p>
-
-    <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1">Commencer a suivre le user suivant:</span>
-        <input type="select" class="form-control" placeholder="Username" aria-label="Username">
-    </div>
-
     <div class="row">
-        <span class="input-group-text" id="basic-addon1">@</span>
+        <p>Utilisateurs suivis  <span class="badge bg-primary rounded-pill">{{nb_follows}}</span> </p>
+        <ul class="list-group">
+        {% for u in user.follows.all %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <form method="post">
+                    <div class="input-group mb-3">
+                        <p>{{ u }}</p>
+                        {{ form_unfollow.as_p }}
+                        {% csrf_token %}
+                      <button class="btn btn-primary col-6" type="submit">Ne plus suivre</button>
+                    </div>
+                </form>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    <br>
+    <p>Abonnés <span class="badge bg-primary rounded-pill">{{nb_followers}}</span> </p>
+    {% for u in user.followers.all %}
+    <p>{{ u }} </p>
+    <br/>
+    {% endfor %}
+
+
+    <div class="input-group">
+        <span class="input-group-text" id="basic-addon1">S'abonner à l'utilisateur suivant:</span>
         <form method="post">
-        {{ form_follow.as_p }}
-        {% csrf_token %}
-        <button class="btn btn-primary col-1" type="submit" >Confirmer</button>
+            <input type="select" class="form-control col-5" placeholder="Username" aria-label="Username">
+            {{ form_follow.as_p }}
+            {% csrf_token %}
+            <button class="btn btn-primary col-2" type="submit" >Confirmer</button>
         </form>
     </div>
 </div>

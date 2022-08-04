@@ -21,7 +21,8 @@ def home(request):
 def createTicket(request):
     ticket_form = forms.TicketForm()
     if request.method == 'POST':
-        ticket_form = forms.TicketForm(request.POST, request.FILES)
+        #ticket_form = forms.TicketForm(request.POST, request.FILES)
+        ticket_form = forms.TicketForm(request.POST)
         if ticket_form.is_valid():
             ticket = ticket_form.save(commit=False)
             ticket.user = request.user
@@ -143,12 +144,19 @@ def deleteReview(request, review_id):
 @login_required
 def follow_users(request):
     form_follow = forms.FollowUsersForm(instance=request.user)
+    nb_followers = len(request.user.followers.all())
+    nb_follows = len(request.user.follows.all())
     if request.method == 'POST':
         form_follow = forms.FollowUsersForm(request.POST, instance=request.user)
         if form_follow.is_valid():
             form_follow.save()
             return redirect('follow_users')
-    return render(request, 'reviews/follow_users_form.html', context={'form_follow': form_follow})
+    context = {
+        'follow_form': form_follow,
+        'nb_followers': nb_followers,
+        'nb_follows': nb_follows,
+    }
+    return render(request, 'reviews/follow_users_form.html', context=context)
 
 @login_required
 def unfollow_users(request):
