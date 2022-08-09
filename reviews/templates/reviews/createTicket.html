@@ -2,13 +2,19 @@
 {% block content %}
 
 <div class="container-fluid">
-    <h2 class="mt-4">Créer un ticket</h2>
-    <form method="post" enctype="multipart/form-data">
-        {{ ticket_form.as_p }}
-        {% csrf_token %}
-        <button class="btn btn-primary col-1" type="submit" >Publier</button>
-    </form>
-    <a class="btn btn-primary col-2" href="{% url 'feed' %}">Retour à l'accueil</a>
+    <div class="row justify-content-center">
+        <h2 class="mt-4">Créer un ticket</h2>
+        <form method="post" enctype="multipart/form-data">
+            {{ ticket_form.as_p }}
+            {% csrf_token %}
+            <div class="row justify-content-center mt-4">
+                <button class="btn btn-primary col-1" type="submit" >Publier</button>
+            </div>
+        </form>
+    </div>
+    <div class="row justify-content-center">
+        <a class="btn btn-link col-4 mb-4" href="{% url 'feed' %}">Retour </a>
+    </div>
 </div>
 
 {% endblock content %}

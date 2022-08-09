@@ -2,14 +2,16 @@
 {% block content %}
 <div class="container-fluid">
     <h2 class="mt-4">Suppression</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <p>Êtes-vous sûr de vouloir supprimer "{{ review.title }}"?</p>
+    <div class="row mb-4 mt-4">
+        <form method="POST">
+            {% csrf_token %}
+            <p>Êtes-vous sûr de vouloir supprimer cette critique?</p>
 
-        <div class="row"></div>
-        <input class="btn btn-primary col-1" type="submit" value="Oui, supprimer">
-        <a class="btn btn-primary col-1" href="{% url 'view_review' review.id %}">retour</a>
-        </div>
-    </form>
+            <input class="btn btn-primary col-1" type="submit" value="Oui, supprimer">
+        </form>
+    </div>
+    <div class="row justify-content-center">
+        <a class="btn btn-link col-1" href="{% url 'view_review' review.id %}">retour</a>
+    </div>
 </div>
 {% endblock %}

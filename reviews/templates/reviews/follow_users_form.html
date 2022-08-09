@@ -1,43 +1,40 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container-fluid" xmlns="http://www.w3.org/1999/html">
+<div class="container-fluid">
     <h2 class="mt-4">Suivre des utilisateurs</h2>
     <div class="row mt-4">
-        <p>Utilisateurs suivis  <span class="badge bg-primary rounded-pill">{{nb_follows}}</span> </p>
-        <ul class="list-group">
+        <p>Utilisateurs suivis  <span class="badge bg-primary rounded-pill">{{user.follows.count}}</span></p>
+        <ul class="list-group mb-4 col-7">
         {% for u in user.follows.all %}
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                <form method="post">
-                    <div class="input-group mb-3">
-                        <p>{{ u }}</p>
-                        {{ form_unfollow.as_p }}
-                        {% csrf_token %}
-                      <button class="btn btn-primary col-6" type="submit">Ne plus suivre</button>
-                    </div>
-                </form>
+                <p>{{ u }}</p>
+                <a class="btn btn-primary" href="{% url 'unfollow' u %}">Ne plus suivre test</a>
             </li>
         {% endfor %}
         </ul>
     </div>
-    <br>
-    <p>Abonnés <span class="badge bg-primary rounded-pill">{{nb_followers}}</span> </p>
+
+    <div class="row mt-4">
+        <p>S'abonner à un utilisateur:</p>
+        <form class="form-inline justify-content-center col-4" method="POST">
+            <input type="text" placeholder="Utilisateur à suivre">
+            {{ form_follow.as_p }}
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary mb-2 col-2">Suivre</button>
+        </form>
+     </div>
+
+
+    <input id="input_username" type="text" placeholder="Utilisateur à suivre">
+    <a class="btn btn-primary" href="">Suivre test</a>
+
+
+    <p class="mt-5">Abonnés <span class="badge bg-primary rounded-pill">{{user.followers.count}}</span> </p>
     {% for u in user.followers.all %}
     <p>{{ u }} </p>
     <br/>
     {% endfor %}
 
-
-    <div class="input-group">
-        <span class="input-group-text" id="basic-addon1">S'abonner à l'utilisateur suivant:</span>
-        <form method="post">
-            <input type="select" class="form-control col-5" placeholder="Username" aria-label="Username">
-            {{ form_follow.as_p }}
-            {% csrf_token %}
-            <button class="btn btn-primary col-2" type="submit" >Confirmer</button>
-        </form>
-    </div>
 </div>
-
-
 
 {% endblock content %}

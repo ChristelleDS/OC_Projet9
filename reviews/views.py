@@ -21,8 +21,7 @@ def home(request):
 def createTicket(request):
     ticket_form = forms.TicketForm()
     if request.method == 'POST':
-        #ticket_form = forms.TicketForm(request.POST, request.FILES)
-        ticket_form = forms.TicketForm(request.POST)
+        ticket_form = forms.TicketForm(request.POST, request.FILES)
         if ticket_form.is_valid():
             ticket = ticket_form.save(commit=False)
             ticket.user = request.user
@@ -144,8 +143,6 @@ def deleteReview(request, review_id):
 @login_required
 def follow_users(request):
     form_follow = forms.FollowUsersForm(instance=request.user)
-    nb_followers = len(request.user.followers.all())
-    nb_follows = len(request.user.follows.all())
     if request.method == 'POST':
         form_follow = forms.FollowUsersForm(request.POST, instance=request.user)
         if form_follow.is_valid():
@@ -153,26 +150,35 @@ def follow_users(request):
             return redirect('follow_users')
     context = {
         'follow_form': form_follow,
-        'nb_followers': nb_followers,
-        'nb_follows': nb_follows,
     }
     return render(request, 'reviews/follow_users_form.html', context=context)
 
 @login_required
-def unfollow_users(request):
-    if request.method == 'POST':
-        form_unfollow = forms.FollowUsersForm(request.POST, instance=request.user)
-        if form_unfollow.is_valid():
-            form_unfollow.delete()
-            return redirect('follow_users')
-    return render(request, 'reviews/follow_users_form.html', context={'form_unfollow': form_unfollow})
+def follow(request, username):
+    user = request.user
+    follows = user.follows.all()
+    if username != request.user:
+        if username not in follows:
+            user.follows.add(username)
+            user.save()
+    return redirect('follow_users')
+
+@login_required
+def unfollow(request, username):
+    user = request.user
+    follows = user.follows.all()
+    if username != request.user:
+        if username in follows:
+            user.follows.remove(username)
+            user.save()
+    return redirect('follow_users')
 
 
 @login_required
 def feed(request):
-    tickets = models.Ticket.objects.filter(
+    tickets = Ticket.objects.filter(
         user__in=request.user.follows.all())
-    reviews = models.Review.objects.filter(
+    reviews = Review.objects.filter(
         user__in=request.user.follows.all())
     posts = sorted(
         chain(tickets, reviews),
@@ -187,8 +193,8 @@ def feed(request):
 
 @login_required
 def posts(request):
-    tickets = models.Ticket.objects.filter(Q(user=request.user))
-    reviews = models.Review.objects.filter(Q(user=request.user))
+    tickets = Ticket.objects.filter(Q(user=request.user))
+    reviews = Review.objects.filter(Q(user=request.user))
     posts = sorted(
         chain(tickets, reviews),
         key=lambda instance: instance.time_created,
