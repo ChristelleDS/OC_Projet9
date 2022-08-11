@@ -143,33 +143,37 @@ def deleteReview(request, review_id):
 @login_required
 def follow_users(request):
     form_follow = forms.FollowUsersForm(instance=request.user)
+    form_unfollow = forms.UnFollowUserForm(instance=request.user)
     if request.method == 'POST':
         form_follow = forms.FollowUsersForm(request.POST, instance=request.user)
+        form_unfollow = forms.UnFollowUserForm(request.POST, instance=request.user)
         if form_follow.is_valid():
             form_follow.save()
             return redirect('follow_users')
-    context = {
-        'follow_form': form_follow,
-    }
+        if form_unfollow.is_valid():
+            form_unfollow.save()
+            return redirect('follow_users')
+    context = {'form_follow': form_follow, 'form_unfollow': form_unfollow}
     return render(request, 'reviews/follow_users_form.html', context=context)
 
+
 @login_required
-def follow(request, username):
+def follow(request, u_input):
     user = request.user
     follows = user.follows.all()
-    if username != request.user:
-        if username not in follows:
-            user.follows.add(username)
+    if u_input != user.username:
+        if u_input not in follows:
+            user.follows.add(u_input)
             user.save()
     return redirect('follow_users')
 
 @login_required
-def unfollow(request, username):
+def unfollow(request, u_input):
     user = request.user
     follows = user.follows.all()
-    if username != request.user:
-        if username in follows:
-            user.follows.remove(username)
+    if u_input != request.user:
+        if u_input in follows:
+            user.follows.remove(u_input)
             user.save()
     return redirect('follow_users')
 
