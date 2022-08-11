@@ -17,7 +17,7 @@
     <body>
 
     <div class="container-fluid">
-        <div class="row border-3">
+        <div class="row border-3 d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
             <header>
                 <nav class="navbar-expand navbar">
                     <a class="navbar-brand col col-6 text-center" href="#">LITReview</a>
@@ -49,9 +49,9 @@
                               </a>
                               <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <li><a class="dropdown-item" href="{% url 'password_change' %}">Changer le mot de passe</a></li>
-                                <li><a class="dropdown-item" href="{% url 'logout' %}">Se déconnecter</a></li>
                               </ul>
                           </li>
+                          <a class="btn btn-outline-primary" href="{% url 'logout' %}">Se déconnecter</a>
                         </ul>
                     </div>
                 </nav>
