@@ -41,5 +41,3 @@ class followForm(forms.Form):
                                  ,label="S'abonner à un utilisateur ")
 
 
-class unfollowForm(forms.Form):
-    user_input = forms.CharField(label="S'abonner à un utilisateur: ")

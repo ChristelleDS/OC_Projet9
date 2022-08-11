@@ -7,6 +7,9 @@ from itertools import chain
 from django.db.models import Q
 from django.core.paginator import Paginator
 
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 from .models import Ticket, Review
 
 
@@ -151,8 +154,6 @@ def follow_users(request):
         followform = forms.followForm(request.POST)
         if form_follow.is_valid():
             form_follow.save()
-        if form_unfollow.is_valid():
-            form_unfollow.save()
         if followform.is_valid():
             user_input = followform.cleaned_data['user_input']
             return redirect('follow', user_input)
@@ -165,24 +166,22 @@ def follow_users(request):
 
 @login_required
 def follow(request, user_input):
-    user = request.user
-    follows = user.follows.all()
-    if user_input != user.username:
-        if user_input not in follows:
-            user.follows.add(user_input)
-            user.save()
+    current_user = request.user
+    follows = current_user.follows.all()
+    input = User.objects.get(username=user_input)
+    if input.id not in follows:
+        current_user.follows.add(input.id)
+        current_user.save()
     return redirect('follow_users')
 
 @login_required
-def unfollow(request):
-    user = request.user
-    follows = user.follows.all()
-    unfollowform = forms.UnfollowForm()
-    input = unfollowform.user_input
-    if input != request.user.username:
-        if input in follows:
-            user.follows.remove(input)
-            user.save()
+def unfollow(request, user_unfollow):
+    current_user = request.user
+    follows = current_user.follows.all()
+    input = User.objects.get(username=user_unfollow)
+    if input in follows:
+       current_user.follows.remove(input)
+       current_user.save()
     return redirect('follow_users')
 
 
