@@ -144,36 +144,44 @@ def deleteReview(request, review_id):
 def follow_users(request):
     form_follow = forms.FollowUsersForm(instance=request.user)
     form_unfollow = forms.UnFollowUserForm(instance=request.user)
+    followform = forms.followForm()
     if request.method == 'POST':
         form_follow = forms.FollowUsersForm(request.POST, instance=request.user)
         form_unfollow = forms.UnFollowUserForm(request.POST, instance=request.user)
+        followform = forms.followForm(request.POST)
         if form_follow.is_valid():
             form_follow.save()
-            return redirect('follow_users')
         if form_unfollow.is_valid():
             form_unfollow.save()
-            return redirect('follow_users')
-    context = {'form_follow': form_follow, 'form_unfollow': form_unfollow}
+        if followform.is_valid():
+            user_input = followform.cleaned_data['user_input']
+            return redirect('follow', user_input)
+        return redirect('follow_users')
+    context = {'form_follow': form_follow,
+               'form_unfollow': form_unfollow,
+               'followform': followform, }
     return render(request, 'reviews/follow_users_form.html', context=context)
 
 
 @login_required
-def follow(request, u_input):
+def follow(request, user_input):
     user = request.user
     follows = user.follows.all()
-    if u_input != user.username:
-        if u_input not in follows:
-            user.follows.add(u_input)
+    if user_input != user.username:
+        if user_input not in follows:
+            user.follows.add(user_input)
             user.save()
     return redirect('follow_users')
 
 @login_required
-def unfollow(request, u_input):
+def unfollow(request):
     user = request.user
     follows = user.follows.all()
-    if u_input != request.user:
-        if u_input in follows:
-            user.follows.remove(u_input)
+    unfollowform = forms.UnfollowForm()
+    input = unfollowform.user_input
+    if input != request.user.username:
+        if input in follows:
+            user.follows.remove(input)
             user.save()
     return redirect('follow_users')
 

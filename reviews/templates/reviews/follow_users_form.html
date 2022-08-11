@@ -5,15 +5,13 @@
         <h2 class="mt-4">Suivre des utilisateurs</h2>
     </div>
 
-    <div class="row text-center mt-4">
-        <p>S'abonner à un utilisateur:</p>
-        <form class="form-inline col-4" method="POST">
+    <div class="text-center form-inline">
+        <form method="post" class="form">
+            {{ followform.as_p }}
             {% csrf_token %}
-            <input type="text" id="userField" placeholder="Utilisateur à suivre"/>
-            <input type="submit" class="btn btn-primary mb-2 col-2" id="follow_btn" value="suivre" />
+            <button type="submit" class="btn btn-primary mb-4">S'abonner</button>
         </form>
-     </div>
-
+    </div>
 
 
     <div class="row text-center mt-4">

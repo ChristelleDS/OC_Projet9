@@ -52,8 +52,8 @@ urlpatterns = [
     path('review/<int:review_id>/edit', reviews.views.edit_review, name='edit_review'),
     path('review/<int:review_id>/delete', reviews.views.deleteReview, name='delete_review'),
     path('follow-users/', reviews.views.follow_users, name='follow_users'),
-    path('follow-users/<str:username>/follow', reviews.views.follow, name='follow'),
-    path('follow-users/<str:username>/unfollow', reviews.views.unfollow, name='unfollow'),
+    path('follow-users/<str:user_input>/follow', reviews.views.follow, name='follow'),
+    path('follow-users/<str:user_input>/unfollow', reviews.views.unfollow, name='unfollow'),
     path('feed/', reviews.views.feed, name='feed'),
     path('posts/', reviews.views.posts, name='posts')
     ]

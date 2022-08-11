@@ -35,3 +35,11 @@ class UnFollowUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['followers']
+
+class followForm(forms.Form):
+    user_input = forms.CharField(widget= forms.TextInput (attrs={'placeholder':'utilisateur'})
+                                 ,label="S'abonner à un utilisateur ")
+
+
+class unfollowForm(forms.Form):
+    user_input = forms.CharField(label="S'abonner à un utilisateur: ")
