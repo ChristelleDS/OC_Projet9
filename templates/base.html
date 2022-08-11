@@ -55,12 +55,13 @@
                         </ul>
                     </div>
                 </nav>
-                {% if request.user.is_authenticated %}
-                    <p>User connecté: {{ request.user.username }}</p>
-                {% endif %}
             </header>
         </div>
+        {% if request.user.is_authenticated %}
+            <p>User connecté: {{ request.user.username }}</p>
+        {% endif %}
     </div>
+
 
         {% block content %}
         {% endblock content %}
