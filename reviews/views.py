@@ -69,10 +69,12 @@ def createReview_Ticket(request):
         if all([ticket_form.is_valid(), review_form.is_valid()]):
             ticket = ticket_form.save(commit=False)
             ticket.user = request.user
+            ticket.time_created = timezone.now()
             ticket.save()
             review = review_form.save(commit=False)
             review.ticket = ticket
             review.user = request.user
+            review.time_created = timezone.now()
             review.save()
             return redirect('feed')
     context = {

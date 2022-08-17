@@ -3,16 +3,19 @@
 
 <div class="container-fluid">
     <h2 class="mt-4">Suppression</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <p>Êtes-vous sûr de vouloir supprimer "{{ ticket.title }}"?</p>
+    {% if request.user != ticket.user %}
+        <p>Vous n'êtes pas autorisé à supprimer un ticket dont vous n'êtes pas l'auteur.</p>
+    {% else %}
+        <form method="POST">
+            {% csrf_token %}
+            <p>Êtes-vous sûr de vouloir supprimer "{{ ticket.title }}"?</p>
 
-        <div class="row">
-            <input class="btn btn-primary col-1" type="submit" value="Oui, supprimer">
-            <a class="btn btn-link col-1" href="{% url 'view_ticket' ticket.id %}">retour</a>
-        </div>
-
-    </form>
+            <div class="row">
+                <input class="btn btn-primary col-1" type="submit" value="Oui, supprimer">
+                <a class="btn btn-link col-1" href="{% url 'view_ticket' ticket.id %}">retour</a>
+            </div>
+        </form>
+    {% endif %}
 </div>
 
 {% endblock %}

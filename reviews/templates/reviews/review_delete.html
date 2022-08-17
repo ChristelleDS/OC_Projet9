@@ -2,14 +2,18 @@
 {% block content %}
 <div class="container-fluid">
     <h2 class="mt-4">Suppression</h2>
-    <div class="row mb-4 mt-4">
-        <form method="POST">
-            {% csrf_token %}
-            <p>Êtes-vous sûr de vouloir supprimer cette critique?</p>
+    {% if request.user == review.user %}
+        <div class="row mb-4 mt-4">
+            <form method="POST">
+                {% csrf_token %}
+                <p>Êtes-vous sûr de vouloir supprimer cette critique?</p>
 
-            <input class="btn btn-primary col-1" type="submit" value="Oui, supprimer">
-        </form>
-    </div>
+                <input class="btn btn-primary col-1" type="submit" value="Oui, supprimer">
+            </form>
+        </div>
+    {% else %}
+        <p>Vous n'êtes pas autorisé à supprimer un avis dont vous n'êtes pas l'auteur.</p>
+    {% endif %}
     <div class="row justify-content-center">
         <a class="btn btn-link col-1" href="{% url 'view_review' review.id %}">retour</a>
     </div>
