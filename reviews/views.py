@@ -45,7 +45,7 @@ def edit_ticket(request, ticket_id):
             ticket.last_edited = timezone.now()
             ticket.save()
             return redirect('view_ticket', ticket_id)
-    return render(request, 'reviews/edit_ticket.html', {'edit_form': edit_form})
+    return render(request, 'reviews/edit_ticket.html', {'edit_form': edit_form, 'ticket': ticket})
 
 
 @login_required
@@ -127,6 +127,7 @@ def edit_review(request, review_id):
     context = {
         'edit_form': edit_form,
         'ticket': ticket,
+        'review': review
     }
     return render(request, 'reviews/edit_review.html', context=context)
 
