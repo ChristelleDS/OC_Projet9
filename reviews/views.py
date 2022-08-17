@@ -200,7 +200,7 @@ def feed(request):
     paginator = Paginator(posts, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    context = {'page_obj': page_obj}
+    context = {'posts': posts, 'page_obj': page_obj }
     return render(request, 'reviews/feed.html', context=context)
 
 
@@ -213,4 +213,8 @@ def posts(request):
         key=lambda instance: instance.time_created,
         reverse=True
     )
-    return render(request, 'reviews/posts.html', {'posts': posts})
+    paginator = Paginator(posts, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {'posts': posts, 'page_obj': page_obj }
+    return render(request, 'reviews/posts.html', context=context)
