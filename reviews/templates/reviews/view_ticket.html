@@ -17,9 +17,13 @@
             <p>Crée le {{ ticket.time_created }} par {{ ticket.user }}. </p>
         {% endif %}
         <div class="row">
-            <p><a class="btn btn-primary col-1" href="{% url 'edit_ticket' ticket.id %}">Modifier</a>
-            <a class="btn btn-primary col-1" href="{% url 'delete_ticket' ticket.id %}">Supprimer</a>
-            <a class="btn btn-primary col-2" href="{% url 'review' ticket.id %}">Rédiger une critique</a></p>
+            {% if request.user == ticket.user %}
+                <p><a class="btn btn-primary col-1" href="{% url 'edit_ticket' ticket.id %}">Modifier</a>
+                <a class="btn btn-primary col-1" href="{% url 'delete_ticket' ticket.id %}">Supprimer</a>
+                <a class="btn btn-primary col-2" href="{% url 'review' ticket.id %}">Avis</a></p>
+            {% else %}
+                <p><a class="btn btn-primary col-2" href="{% url 'review' ticket.id %}">Avis</a></p>
+            {% endif %}
         </div>
     </div>
     <div class="row">

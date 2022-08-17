@@ -43,6 +43,6 @@ class Review(models.Model):
     headline = models.fields.CharField(max_length=128)
     body = models.fields.TextField(max_length=8192, blank=True)
     rating = models.fields.IntegerField(choices=Rating.choices, default=0)
-    time_created = models.DateTimeField(auto_now_add=True)
-    last_edited = models.DateTimeField(auto_now_add=True, null=True)
+    time_created = models.DateTimeField(timezone.now)
+    last_edited = models.DateTimeField(timezone.now, null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

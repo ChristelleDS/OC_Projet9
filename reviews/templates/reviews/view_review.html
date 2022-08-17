@@ -54,8 +54,11 @@
             <p>Crée le {{ review.time_created }} par {{ review.user }}. </p>
         {% endif %}
         <div class="row">
-            <p><a class="btn btn-primary col-1" href="{% url 'edit_review' review.id %}">Modifier</a>
-            <a class="btn btn-primary col-1" href="{% url 'delete_review' review.id %}">Supprimer</a></p>
+             {% if request.user == review.user %}
+                <p><a class="btn btn-primary col-1" href="{% url 'edit_review' review.id %}">Modifier</a>
+                <a class="btn btn-primary col-1" href="{% url 'delete_review' review.id %}">Supprimer</a></p>
+            {% endif %}
+
         </div>
     </div>
 </div>

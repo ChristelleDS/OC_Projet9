@@ -15,9 +15,9 @@
                     <p class="card-text">{{ ticket.description }}</p>
                     <div class="text-end">
                         {% if request.user == ticket.user %}
-                          <a class="btn btn-primary col-5" href="{% url 'view_ticket' ticket.id %}">editer</a>
+                          <a class="btn btn-primary col-5" href="{% url 'view_ticket' ticket.id %}">Editer</a>
                         {% endif %}
-                        <a class="btn btn-primary col-5" href="{% url 'review' ticket.id %}">écrire une critique</a>
+                        <a class="btn btn-primary col-5" href="{% url 'review' ticket.id %}">Avis</a>
                     </div>
               </div>
           </div>

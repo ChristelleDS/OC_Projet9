@@ -92,6 +92,7 @@ def createReview(request, ticket_id):
             review = review_form.save(commit=False)
             review.ticket = ticket
             review.user = request.user
+            review.time_created = timezone.now()
             review.save()
             return redirect('feed')
     context = {
@@ -118,8 +119,7 @@ def edit_review(request, review_id):
             edit_form = forms.ReviewForm(request.POST, instance=review)
             if edit_form.is_valid():
                 form = edit_form.save(commit=False)
-                last_edited = timezone.now()
-                form.save()
+                form.last_edited = timezone.now()
                 form.save()
                 return redirect('feed')
     context = {

@@ -21,7 +21,7 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = models.Review
         # fields = '__all__'
-        exclude = ('user', 'ticket')
+        exclude = ('user', 'ticket', 'time_created', 'last_edited',)
 
 
 class DeleteReviewForm(forms.Form):
