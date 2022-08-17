@@ -7,10 +7,11 @@
         {% csrf_token %}
         <p>Êtes-vous sûr de vouloir supprimer "{{ ticket.title }}"?</p>
 
-        <div class="row"></div>
-        <input class="btn btn-primary col-1" type="submit" value="Oui, supprimer">
-        <a class="btn btn-link col-1" href="{% url 'view_ticket' ticket.id %}">retour</a>
+        <div class="row">
+            <input class="btn btn-primary col-1" type="submit" value="Oui, supprimer">
+            <a class="btn btn-link col-1" href="{% url 'view_ticket' ticket.id %}">retour</a>
         </div>
+
     </form>
 </div>
 

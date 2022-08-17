@@ -13,13 +13,6 @@ User = get_user_model()
 
 
 @login_required
-def home(request):
-    tickets = models.Ticket.objects.all()
-    reviews = models.Review.objects.all()
-    return render(request, 'reviews/home.html', context={'tickets': tickets, 'reviews': reviews})
-
-
-@login_required
 def createTicket(request):
     ticket_form = forms.TicketForm()
     if request.method == 'POST':
@@ -27,8 +20,9 @@ def createTicket(request):
         if ticket_form.is_valid():
             ticket = ticket_form.save(commit=False)
             ticket.user = request.user
+            ticket.time_created = timezone.now()
             ticket.save()
-            return redirect('feed')
+            return redirect('posts')
     context = {'ticket_form': ticket_form}
     return render(request, 'reviews/createTicket.html', context=context)
 
@@ -48,8 +42,8 @@ def edit_ticket(request, ticket_id):
         edit_form = forms.TicketForm(request.POST, request.FILES, instance=ticket)
         if edit_form.is_valid():
             ticket = edit_form.save(commit=False)
-            last_edited = timezone.now()
-            edit_form.save()
+            ticket.last_edited = timezone.now()
+            ticket.save()
             return redirect('view_ticket', ticket_id)
     return render(request, 'reviews/edit_ticket.html', {'edit_form': edit_form})
 
@@ -137,7 +131,7 @@ def edit_review(request, review_id):
 
 @login_required
 def deleteReview(request, review_id):
-    review = Review.objects.get(id=review_id)
+    review = get_object_or_404(models.Review, id=review_id)
     if request.method == 'POST':
         review.delete()
         return redirect('feed')
@@ -148,18 +142,14 @@ def deleteReview(request, review_id):
 
 @login_required
 def follow_users(request):
-    form_follow = forms.FollowUsersForm(instance=request.user)
-    followform = forms.followForm()
+    followform = forms.FollowForm()
     if request.method == 'POST':
-        form_follow = forms.FollowUsersForm(request.POST, instance=request.user)
-        followform = forms.followForm(request.POST)
-        if form_follow.is_valid():
-            form_follow.save()
+        followform = forms.FollowForm(request.POST)
         if followform.is_valid():
             user_input = followform.cleaned_data['user_input']
             return redirect('follow', user_input)
         return redirect('follow_users')
-    context = {'form_follow': form_follow,
+    context = {
                'followform': followform, }
     return render(request, 'reviews/follow_users_form.html', context=context)
 
@@ -200,7 +190,7 @@ def feed(request):
     paginator = Paginator(posts, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    context = {'posts': posts, 'page_obj': page_obj }
+    context = {'posts': posts, 'page_obj': page_obj}
     return render(request, 'reviews/feed.html', context=context)
 
 
@@ -216,5 +206,5 @@ def posts(request):
     paginator = Paginator(posts, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    context = {'posts': posts, 'page_obj': page_obj }
+    context = {'posts': posts, 'page_obj': page_obj}
     return render(request, 'reviews/posts.html', context=context)

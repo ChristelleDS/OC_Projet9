@@ -23,7 +23,6 @@ import authentication.views
 import reviews.views
 
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('login/', authentication.views.login_page, name='login'),
@@ -40,7 +39,6 @@ urlpatterns = [
         template_name='authentication/password_change_done.html'),
          name='password_change_done'
          ),
-    path('home/', reviews.views.home, name='home'),
     path('signup/', authentication.views.signup_page, name='signup'),
     path('ticket/create/', reviews.views.createTicket, name='ticket'),
     path('ticket/<int:ticket_id>', reviews.views.view_ticket, name='view_ticket'),

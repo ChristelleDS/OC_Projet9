@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 from PIL import Image
 
 
@@ -7,8 +8,8 @@ class Ticket(models.Model):
     title = models.fields.CharField(max_length=128)
     description = models.fields.TextField(max_length=2048, blank=True)
     image = models.ImageField(null=True, blank=True)
-    time_created = models.DateTimeField(auto_now_add=True)
-    last_edited = models.DateTimeField(auto_now_add=True, null=True)
+    time_created = models.DateTimeField(default=timezone.now)
+    last_edited = models.DateTimeField(default=timezone.now, null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)
 
     IMAGE_MAX_SIZE = (200, 200)
@@ -28,8 +29,6 @@ class Ticket(models.Model):
             pass
 
 
-
-
 class Review(models.Model):
 
     class Rating(models.IntegerChoices):
@@ -47,5 +46,3 @@ class Review(models.Model):
     time_created = models.DateTimeField(auto_now_add=True)
     last_edited = models.DateTimeField(auto_now_add=True, null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-
-

@@ -3,8 +3,12 @@
     <div class="row justify-content-center">
         <div class="card mb-4" style="max-width: 540px;">
           <div class="row g-0">
-              <p class="card-header"><small class="text-muted">Critique publiée {{ review.last_edited }}
-                    par {{ review.user}}</small></p>
+              <p class="card-header"><small class="text-muted">
+                {% if review.last_edited %}
+                    Critique mise à jour {{ review.last_edited }} par {{ review.user }}.
+                {% else %}
+                    Critique publiée le {{ review.time_created }} par {{ review.user }}.
+                {% endif %}</small></p>
             <h5 class="card-title">{{ review.headline }}</h5>
             <div class="post card-body col-md-8">
                 {% if review.rating == 0 %}
