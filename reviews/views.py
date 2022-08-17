@@ -48,7 +48,6 @@ def edit_ticket(request, ticket_id):
         edit_form = forms.TicketForm(request.POST, request.FILES, instance=ticket)
         if edit_form.is_valid():
             ticket = edit_form.save(commit=False)
-            ticket.user = request.user
             last_edited = timezone.now()
             edit_form.save()
             return redirect('view_ticket', ticket_id)
@@ -124,7 +123,10 @@ def edit_review(request, review_id):
         if 'edit_review' in request.POST:
             edit_form = forms.ReviewForm(request.POST, instance=review)
             if edit_form.is_valid():
-                edit_form.save()
+                form = edit_form.save(commit=False)
+                last_edited = timezone.now()
+                form.save()
+                form.save()
                 return redirect('feed')
     context = {
         'edit_form': edit_form,
