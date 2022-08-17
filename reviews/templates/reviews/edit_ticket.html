@@ -2,7 +2,7 @@
 {% block content %}
 <div class="container-fluid">
     <h3 class="mt-4">Modifier le ticket</h3>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {{ edit_form.as_p }}
         {% csrf_token %}
         <button class="btn btn-primary col-1" type="submit" >Sauvegarder</button>

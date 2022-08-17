@@ -3,7 +3,7 @@
     <div class="row justify-content-center">
         <div class="card mb-4" style="max-width: 540px;">
           <div class="row g-0">
-              <p class="card-header"><small class="text-muted">Ticket publié {{ ticket.time_created }}
+              <p class="card-header"><small class="text-muted">Ticket publié {{ ticket.last_edited }}
                     par {{ ticket.user}}</small></p>
               <h5 class="card-title">{{ ticket.title }}</h5>
               {% if ticket.image %}

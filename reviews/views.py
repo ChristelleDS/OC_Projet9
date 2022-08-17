@@ -2,15 +2,14 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from . import models, forms
 from itertools import chain
 from django.db.models import Q
 from django.core.paginator import Paginator
-
+from .models import Ticket, Review
 from django.contrib.auth import get_user_model
 User = get_user_model()
-
-from .models import Ticket, Review
 
 
 @login_required
@@ -46,11 +45,13 @@ def edit_ticket(request, ticket_id):
     ticket = get_object_or_404(models.Ticket, id=ticket_id)
     edit_form = forms.TicketForm(instance=ticket)
     if request.method == 'POST':
-        if 'edit_ticket' in request.POST:
-            edit_form = forms.TicketForm(request.POST, instance=ticket)
-            if edit_form.is_valid():
-                edit_form.save()
-                return redirect('feed')
+        edit_form = forms.TicketForm(request.POST, request.FILES, instance=ticket)
+        if edit_form.is_valid():
+            ticket = edit_form.save(commit=False)
+            ticket.user = request.user
+            last_edited = timezone.now()
+            edit_form.save()
+            return redirect('view_ticket', ticket_id)
     return render(request, 'reviews/edit_ticket.html', {'edit_form': edit_form})
 
 
@@ -61,8 +62,8 @@ def deleteTicket(request, ticket_id):
         ticket.delete()
         return redirect('feed')
     return render(request,
-                    'reviews/ticket_delete.html',
-                    {'ticket': ticket})
+                  'reviews/ticket_delete.html',
+                  {'ticket': ticket})
 
 
 @login_required
@@ -139,18 +140,16 @@ def deleteReview(request, review_id):
         review.delete()
         return redirect('feed')
     return render(request,
-                    'reviews/review_delete.html',
-                    {'review': review})
+                  'reviews/review_delete.html',
+                  {'review': review})
 
 
 @login_required
 def follow_users(request):
     form_follow = forms.FollowUsersForm(instance=request.user)
-    form_unfollow = forms.UnFollowUserForm(instance=request.user)
     followform = forms.followForm()
     if request.method == 'POST':
         form_follow = forms.FollowUsersForm(request.POST, instance=request.user)
-        form_unfollow = forms.UnFollowUserForm(request.POST, instance=request.user)
         followform = forms.followForm(request.POST)
         if form_follow.is_valid():
             form_follow.save()
@@ -159,7 +158,6 @@ def follow_users(request):
             return redirect('follow', user_input)
         return redirect('follow_users')
     context = {'form_follow': form_follow,
-               'form_unfollow': form_unfollow,
                'followform': followform, }
     return render(request, 'reviews/follow_users_form.html', context=context)
 
@@ -168,20 +166,21 @@ def follow_users(request):
 def follow(request, user_input):
     current_user = request.user
     follows = current_user.follows.all()
-    input = User.objects.get(username=user_input)
-    if input.id not in follows:
-        current_user.follows.add(input.id)
+    u_input = User.objects.get(username=user_input)
+    if u_input.id not in follows:
+        current_user.follows.add(u_input.id)
         current_user.save()
     return redirect('follow_users')
+
 
 @login_required
 def unfollow(request, user_unfollow):
     current_user = request.user
     follows = current_user.follows.all()
-    input = User.objects.get(username=user_unfollow)
-    if input in follows:
-       current_user.follows.remove(input)
-       current_user.save()
+    u_input = User.objects.get(username=user_unfollow)
+    if u_input in follows:
+        current_user.follows.remove(u_input)
+        current_user.save()
     return redirect('follow_users')
 
 
@@ -202,6 +201,7 @@ def feed(request):
     context = {'page_obj': page_obj}
     return render(request, 'reviews/feed.html', context=context)
 
+
 @login_required
 def posts(request):
     tickets = Ticket.objects.filter(Q(user=request.user))
@@ -211,4 +211,4 @@ def posts(request):
         key=lambda instance: instance.time_created,
         reverse=True
     )
-    return render(request, 'reviews/posts.html', {'posts':posts})
+    return render(request, 'reviews/posts.html', {'posts': posts})
