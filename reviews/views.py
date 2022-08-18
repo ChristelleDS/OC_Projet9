@@ -152,8 +152,7 @@ def follow_users(request):
             user_input = followform.cleaned_data['user_input']
             return redirect('follow', user_input)
         return redirect('follow_users')
-    context = {
-               'followform': followform, }
+    context = {'followform': followform, }
     return render(request, 'reviews/follow_users_form.html', context=context)
 
 
@@ -162,9 +161,12 @@ def follow(request, user_input):
     current_user = request.user
     follows = current_user.follows.all()
     u_input = User.objects.get(username=user_input)
-    if u_input.id not in follows:
-        current_user.follows.add(u_input.id)
+    if u_input not in follows:
+        current_user.follows.add(u_input)
         current_user.save()
+    if current_user not in u_input.followers.all():
+        u_input.followers.add(current_user)
+        u_input.save()
     return redirect('follow_users')
 
 
@@ -176,6 +178,9 @@ def unfollow(request, user_unfollow):
     if u_input in follows:
         current_user.follows.remove(u_input)
         current_user.save()
+    if current_user in u_input.followers.all():
+        u_input.followers.remove(current_user)
+        u_input.save()
     return redirect('follow_users')
 
 
