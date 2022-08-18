@@ -9,6 +9,7 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from .models import Ticket, Review
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
 User = get_user_model()
 
 

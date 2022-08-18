@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from . import models
 from django.contrib.auth import get_user_model
 
@@ -36,6 +37,13 @@ class FollowForm(forms.Form):
     user_input = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'utilisateur'}),
                                  label="S'abonner à un utilisateur")
 
+    def clean_userinput(self):
+        input = self.cleaned_data['user_input']
+        if input not in users:
+            raise ValidationError("Erreur, l'utilisateur saisi n'existe pas.", code='user_unknown')
+        return input
+
+
 class FollowUsersForm(forms.ModelForm):
     class Meta:
         model = User
@@ -46,13 +54,4 @@ class UnFollowUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['followers']
-
-
-def check_userinput(user_input):
-    if user_input not in users:
-        raise forms.ValidationError("Erreur, l'utilisateur saisi n'existe pas.", code='user_unknown')
-    else:
-        return user_input
-
-
 
