@@ -9,7 +9,6 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from .models import Ticket, Review
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ObjectDoesNotExist
 User = get_user_model()
 
 
@@ -150,11 +149,8 @@ def follow_users(request):
     if request.method == 'POST':
         followform = forms.FollowForm(request.POST)
         if followform.is_valid():
-            print("form valid")
             user_input = followform.cleaned_data['user_input']
             return redirect('follow', user_input)
-        else:
-            print("form error")
     context = {'followform': followform, }
     return render(request, 'reviews/follow_users_form.html', context=context)
 

@@ -32,6 +32,7 @@ class DeleteReviewForm(forms.Form):
 class DeleteTicketForm(forms.Form):
     delete_ticket = forms.BooleanField(widget=forms.HiddenInput, initial=True)
 
+
 def clean_user_input(user_input):
     try:
         input = User.objects.get(username=user_input)
@@ -42,16 +43,3 @@ def clean_user_input(user_input):
 class FollowForm(forms.Form):
     user_input = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'utilisateur'}),
                                  label="S'abonner à un utilisateur", validators=[clean_user_input])
-
-
-class FollowUsersForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['follows']
-
-
-class UnFollowUserForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['followers']
-
