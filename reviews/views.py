@@ -150,9 +150,11 @@ def follow_users(request):
     if request.method == 'POST':
         followform = forms.FollowForm(request.POST)
         if followform.is_valid():
+            print("form valid")
             user_input = followform.cleaned_data['user_input']
             return redirect('follow', user_input)
-        return redirect('follow_users')
+        else:
+            print("form error")
     context = {'followform': followform, }
     return render(request, 'reviews/follow_users_form.html', context=context)
 

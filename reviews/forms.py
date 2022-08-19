@@ -1,5 +1,5 @@
 from django import forms
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from . import models
 from django.contrib.auth import get_user_model
 
@@ -32,16 +32,16 @@ class DeleteReviewForm(forms.Form):
 class DeleteTicketForm(forms.Form):
     delete_ticket = forms.BooleanField(widget=forms.HiddenInput, initial=True)
 
+def clean_user_input(user_input):
+    try:
+        input = User.objects.get(username=user_input)
+    except ObjectDoesNotExist:
+        raise ValidationError("Erreur, l'utilisateur saisi n'existe pas.")
+
 
 class FollowForm(forms.Form):
     user_input = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'utilisateur'}),
-                                 label="S'abonner à un utilisateur")
-
-    def clean_userinput(self):
-        input = self.cleaned_data['user_input']
-        if input not in users:
-            raise ValidationError("Erreur, l'utilisateur saisi n'existe pas.", code='user_unknown')
-        return input
+                                 label="S'abonner à un utilisateur", validators=[clean_user_input])
 
 
 class FollowUsersForm(forms.ModelForm):

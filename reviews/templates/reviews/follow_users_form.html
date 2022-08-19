@@ -7,8 +7,8 @@
 
     <div class="text-center form-inline">
         <form method="post" class="form">
-            {{ followform.as_p }}
             {% csrf_token %}
+            {{ followform.as_p }}
             <button type="submit" class="btn btn-primary mb-4">S'abonner</button>
         </form>
     </div>
