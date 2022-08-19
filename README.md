@@ -16,7 +16,7 @@ Se positionner dans le répertoire d'installation souhaité:
 $ cd LITReview_repository
 
 Récupérer le code source sur le repository Github :
-  -  git clone https://github.com/ChristelleDS/OC_Projet9
+$  git clone https://github.com/ChristelleDS/OC_Projet9
  
 
 # Créez un environnement virtuel et l'activer
@@ -60,5 +60,13 @@ Il permet d'administrer les comptes utilisateurs ainsi que les publications.
 * Utilisation de Bootstrap
 * Utilisation d'un kit.fontawesome.com pour l'affichage des notes 
 
+# Paramétrage
 
+Répertoire de stockage des images uploadées par les utilisateurs:
+FICHIER SETTINGS.PY
+* MEDIA_URL = '/media/'
+* MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+Lors d'une bascule en production, mettre à False le paramétrage suivant:
+* DEBUG = True
 

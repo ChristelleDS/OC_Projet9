@@ -27,10 +27,12 @@ class UserFollows(models.Model):
     class Meta:
         unique_together = ('user', 'followed_user')
 
+
 class UserFollowing(models.Model):
-    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="following")
-    following_user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="subscribed")
+    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                             related_name="following")
+    following_user = models.ForeignKey(to=settings.AUTH_USER_MODEL,
+                                       on_delete=models.CASCADE, related_name="subscribed")
 
     class Meta:
         unique_together = ('user', 'following_user')
-
